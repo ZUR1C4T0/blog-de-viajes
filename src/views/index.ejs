@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog de Viajes</title>
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <style>
+        .avatar {
+            max-height: 16px;
+            max-width: 16px;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+    <%- (session) ? include("./partials/private_header.ejs", {active:'inicio', session}) :
+        include("./partials/public_header.ejs",{active:'inicio', session}) %>
+
+        <div class="container-md flex-grow-1">
+            <div class="row">
+                <div class="col">
+                    <img src="img/fondo.jpg" class="w-100">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-auto">
+                    <h1>Inicio</h1>
+                </div>
+                <div class="col align-self-end">
+                    <p class="text-end">Aquí nuestras últimas publicaciones:</p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-11 col-md-8 col-lg-5 mb-3">
+                    <form class="d-flex mx-auto" action="./" autocomplete="off">
+                        <input class="form-control me-2" name="b" placeholder="Buscar" value="<%=buscar%>">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row flex-column align-content-center">
+
+                <% publicaciones.forEach(publicacion=> { %>
+                    <div class="col-md-10 col-lg-8 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h3 class="text-capitalize">
+                                        <a href="/publicacion/<%= publicacion.id %>" class="nav-link d-inline">
+                                            <%=publicacion.titulo%>
+                                        </a>
+                                        <span class="badge text-bg-danger rounded-pill fa fa-heart">
+                                            <%=publicacion.votos%>
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="card-subtitle row">
+                                    <h6 class="text-capitalize bg-secondary bg-opacity-25 py-3">
+                                        <% if(publicacion.avatar!=null ) {%>
+                                            <img src="/avatar/<%= publicacion.avatar %>" class="rounded avatar">
+                                            <% } else { %>
+                                                <i class="fa-regular fa-user"></i>
+                                                <% } %>
+                                                    <%=publicacion.nombre%> -
+                                                        <i class="fa-regular fa-calendar"></i>
+                                                        <%= publicacion.fecha_hora.getFullYear() %>/
+                                                            <%= publicacion.fecha_hora.getMonth()+1 %>/
+                                                                <%= publicacion.fecha_hora.getDate() %>
+                                    </h6>
+                                </div>
+                                <div class="card-text">
+                                    <p>
+                                        <%= publicacion.resumen %>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+
+            </div>
+
+            <div class="row">
+                <nav class="col">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <%= (pagina <= 1)? 'disabled' : '' %>">
+                            <a class="page-link" href="/?p=<%= (pagina>1)? pagina-1: 1 %>">
+                                &laquo; Anterior
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/?p=<%= pagina+1 %>">
+                                Siguiente &raquo;
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+        <%- include("./partials/footer") %>
+</body>
+
+</html>

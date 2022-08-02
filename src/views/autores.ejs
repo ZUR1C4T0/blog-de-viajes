@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autores</title>
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <style>
+        .avatar {
+            max-height: 20px;
+            max-width: 20px;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column" style="min-height: 100vh;">
+    <%- (session) ? include("./partials/private_header.ejs", {active:'autores', session}) :
+        include("./partials/public_header.ejs",{active:'autores', session}) %>
+
+        <div class="container-md flex-grow-1">
+            <div class="row">
+                <div class="col">
+                    <img src="img/fondo.jpg" class="w-100">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-auto">
+                    <h1>Autores</h1>
+                </div>
+                <div class="col align-self-end">
+                    <p class="text-end">Conoce a nuestros autores:</p>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 g-md-5">
+
+                <% autores.forEach( autor=>{ %>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h5>
+                                        <% if(autor.avatar!=null ) {%>
+                                            <img src="/avatar/<%= autor.avatar %>" class="rounded avatar">
+                                            <% } else { %>
+                                                <i class="fa-regular fa-user"></i>
+                                                <% } %>
+                                                    <%= autor.nombre %>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+
+            </div>
+        </div>
+
+        <%- include("./partials/footer") %>
+</body>
+
+</html>
